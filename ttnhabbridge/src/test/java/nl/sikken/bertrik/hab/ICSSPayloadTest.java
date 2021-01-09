@@ -11,7 +11,7 @@ import org.junit.Test;
 public final class ICSSPayloadTest {
 	
     byte[] data = hexStringToByteArray("6b4dc82915f91ece004601fa1ed100e300426107fa1ed1000901666107fa1ed1008602117d07fa1ed100e90004ae07fa1ed100e300426107fa1ed1000901666107fa1ed1008602117d07fa1ed100e90004ae07fa1ed100e300426107fa1ed1000901666107fa1ed1008602117d07fa1ed100e90004ae07");
-    ICSSPayload payload = ICSSPayload.parse(data); 
+    ICSSPayload payload = ICSSPayload.parse(data, 1610233822 ); 
     
     /**
      * Verifies basic parsing.
