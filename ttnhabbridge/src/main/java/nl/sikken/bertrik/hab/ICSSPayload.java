@@ -31,8 +31,9 @@ public final class ICSSPayload {
     private static final Logger LOG = LoggerFactory.getLogger(ICSSPayload.class);
     
     private static final int current_data_size = 11;  // Number of bytes to store the current position and temperature/sensor info
-    private static final int unix_time_of_our_special_epoch = 1577840461;  // The tracker uses an epoch of 1/1/2020 so we have to add this to the
-    																		// value sent by the tracker to convert to unix time.
+    private static final int past_data_size = 8;  // Number of bytes to store one set of past long,lat,alt, timestamp
+
+    
     /**
      * Constructor.
      * 
@@ -71,9 +72,9 @@ public final class ICSSPayload {
      * @return a parsed object
      * @throws BufferUnderflowException in case of a buffer underflow
      */
-    public static ICSSPayload parse(byte[] raw) throws BufferUnderflowException {
+    public static ICSSPayload parse(byte[] raw, int current_time) throws BufferUnderflowException {
     	int payload_size = raw.length;
-    	int n_past_positions = (payload_size - current_data_size)/9;
+    	int n_past_positions = (payload_size - current_data_size)/past_data_size;
     	
         ByteBuffer bb = ByteBuffer.wrap(raw).order(ByteOrder.LITTLE_ENDIAN);
         byte byte0  = bb.get();
@@ -108,7 +109,7 @@ public final class ICSSPayload {
             float latitude_temp = (float) ((bb.getShort() *  0xFFFF) / 1e7);
             float longitude_temp = (float) ((bb.getShort() *  0xFFFF) / 1e7);
             int altitude_temp = ((bb.getShort() & 0xFFFF) * 0xFF) / 1000;
-            long ts_temp = ((bb.get() & 0xFF) | ((bb.get() & 0xFF) << 8) | ((bb.get() & 0x0F) << 16)) * 60 + unix_time_of_our_special_epoch;
+            long ts_temp = current_time -  ((bb.get() & 0xFF) | ((bb.get() & 0xFF) << 8)) * 60;
         	
             past_postion_time ppt = new past_postion_time(longitude_temp, latitude_temp, altitude_temp, ts_temp);
             past_position_times.add(ppt);

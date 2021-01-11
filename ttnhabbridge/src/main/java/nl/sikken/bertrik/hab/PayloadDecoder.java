@@ -81,7 +81,10 @@ public final class PayloadDecoder {
         
         try {
             // CUSTOM_FORMAT_ICSS payload
-            ICSSPayload icsspayload = ICSSPayload.parse(message.getPayloadRaw());
+            Instant time = message.getMetaData().getTime();
+            int unix_time_of_message = (int)time.getEpochSecond();
+
+            ICSSPayload icsspayload = ICSSPayload.parse(message.getPayloadRaw(),unix_time_of_message);
             LOG.info("ICSS payload:"+icsspayload.toString());
 
             
@@ -89,8 +92,6 @@ public final class PayloadDecoder {
             double latitude = icsspayload.getLatitude();
             double longitude = icsspayload.getLongitude();
             int altitude = icsspayload.getAltitude();
-            Instant time = message.getMetaData().getTime();
-            //Instant time = Instant.ofEpochSecond(icsspayload.getTimeStamp());
             Sentence sentence = new Sentence(callSign, counter, time);
             sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getPressure()));
             sentence.addField(String.format(Locale.ROOT, "%d", icsspayload.getBoardTemp()));
