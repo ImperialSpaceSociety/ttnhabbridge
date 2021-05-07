@@ -76,12 +76,12 @@ public final class PayloadDecoder {
      * @return the UKHAS sentence
      * @throws DecodeException in case of a problem decoding the message
      */
-    private Sentence decodeCUSTOM_FORMAT_ICSS(TtnMessage message, String callSign, int counter) throws DecodeException {
+    private Sentence decodeCUSTOM_FORMAT_ICSS(TtnUplinkMessage message, String callSign, int counter) throws DecodeException {
         LOG.info("Decoding 'CUSTOM_FORMAT_ICSS' message...");
         
         try {
             // CUSTOM_FORMAT_ICSS payload
-            Instant time = message.getMetaData().getTime();
+            Instant time = message.getTime();
             int unix_time_of_message = (int)time.getEpochSecond();
 
             ICSSPayload icsspayload = ICSSPayload.parse(message.getPayloadRaw(),unix_time_of_message);

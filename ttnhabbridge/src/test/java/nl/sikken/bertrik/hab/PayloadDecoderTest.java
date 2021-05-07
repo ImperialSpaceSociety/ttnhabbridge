@@ -70,14 +70,15 @@ public final class PayloadDecoderTest {
     			+ "\"2020-12-15T13:32:30.62244Z\",\"channel\":0,\"rssi\":-66,"
     			+ "\"snr\":11.2,\"rf_chain\":0,\"latitude\":51.96731,\"longitude\":1.35357,\"altitude\":32}]}}";
  
-        TtnMessage message = mapper.readValue(data, TtnMessage.class);
+    	Ttnv2UplinkMessage message = mapper.readValue(data, Ttnv2UplinkMessage.class);
+    	TtnUplinkMessage uplink = message.toUplinkMessage();
 
         // check gateway field
-        Assert.assertEquals("eui-0000024b0b03046b", message.getMetaData().getMqttGateways().get(0).getId());
+        Assert.assertEquals("eui-0000024b0b03046b", uplink.getGateways().get(0).getId());
         
         // decode payload
         PayloadDecoder decoder = new PayloadDecoder(EPayloadEncoding.CUSTOM_FORMAT_ICSS);
-        Sentence sentence = decoder.decode(message);
+        Sentence sentence = decoder.decode(uplink);
         
         Assert.assertEquals("$$icspace23,41,13:32:30,1000,21,51.962700,1.350021,83,31,31,0,1,5,13*C2CC", sentence.format().trim());
     }
