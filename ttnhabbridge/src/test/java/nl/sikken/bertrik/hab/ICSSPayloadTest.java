@@ -10,7 +10,7 @@ import org.junit.Test;
  */
 public final class ICSSPayloadTest {
 	
-    byte[] data = hexStringToByteArray("6b4dc82915f91ece004601fa1ed100e300426107fa1ed1000901666107fa1ed1008602117d07fa1ed100e90004ae07fa1ed100e300426107fa1ed1000901666107fa1ed1008602117d07fa1ed100e90004ae07fa1ed100e300426107fa1ed1000901666107fa1ed1008602117d07fa1ed100e90004ae07");
+    byte[] data = hexStringToByteArray("7b9cca011b000000000000b71ee0ff370191c1b71ee0ff60018dc1b71ee0ff45018fc1b71ee0ff300189c1b71ee0ff2e018bc1b71ee0ffe4f587c1b71ee0ff370191c1b71ee0ff60018dc1b71ee0ff45018fc1b71ee0ff300189c1b71ee0ff2e018bc1b71ee0ffe4f587c1b71ee0ff370191c1");
     ICSSPayload payload = ICSSPayload.parse(data, 1610233822 ); 
     
     /**
@@ -74,7 +74,7 @@ public final class ICSSPayloadTest {
     
     @Test
     public void test_getPast_position_times_size() {
-    	Assert.assertEquals(12, payload.getPast_position_times().size());
+    	Assert.assertEquals(13, payload.getPast_position_times().size());
     }
     
     
